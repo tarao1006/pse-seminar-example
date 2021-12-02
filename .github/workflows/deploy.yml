@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: email
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v2
+        with:
+          ref: distribution
+      - name: Parse branch
+        id: parse
+        run: |
+          IFS=/ ARR=(${{ github.head_ref }})
+          echo "::set-output name=date::${ARR[1]}"
+        shell: bash
+      - name: Send email
+        uses: tarao1006/pse-seminar-email@main
+        with:
+          ecs_id: ${{ secrets.ECS_ID }}
+          password: ${{ secrets.PASSWORD }}
+          to: ${{ secrets.TO }}
+          from: ${{ secrets.FROM }}
+          family_name: ${{ secrets.FAMILY_NAME }}
+          given_name: ${{ secrets.GIVEN_NAME }}
+          pdf: distribution/${{ github.head_ref }}/report.pdf
+          date: ${{ steps.parse.outputs.date }}

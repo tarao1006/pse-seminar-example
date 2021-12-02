@@ -1,0 +1,16 @@
+.DS_Store
+.env
+.vscode
+
+*.aux
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.pdf
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+
+!distribution/**/*.pdf

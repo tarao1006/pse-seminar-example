@@ -1,0 +1,28 @@
+name: Compile
+
+on:
+  push:
+    branches:
+      - 'seminar/**'
+  workflow_dispatch:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+      - name: Count the number of pull requests
+        id: count
+        run: echo "::set-output name=count::$(gh pr list --search "$GITHUB_REF_NAME" --state all | wc -l)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create pull request
+        if: ${{ steps.count.outputs.count == 0 }}
+        run: gh pr create --base main --title "$GITHUB_REF_NAME" --body ""
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compile report
+        uses: tarao1006/pse-seminar-report@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
