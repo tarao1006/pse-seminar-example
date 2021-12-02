@@ -140,3 +140,7 @@ SMTPサーバの設定や送信先メールアドレスの設定にGitHubのSecr
 latexのコンパイルに使用しているDockerイメージは以下の通りです。
 
 - tarao1006/texlive: https://hub.docker.com/repository/docker/tarao1006/texlive
+
+## License
+
+[MIT License](LICENSE)
